@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "_report.html" import report %}
+{% block title %}Analyze your resume · AI Resume Analyzer{% endblock %}
+{% block content %}
+
+<div class="workspace">
+    <section class="intake">
+        <h1>Resume analyzer</h1>
+        <p class="sub-text">Logged in as {{ user }}</p>
+
+        <form method="post" enctype="multipart/form-data" id="analyze-form">
+            <label for="role">Target role</label>
+            <input id="role" name="role" placeholder="e.g. Backend Engineer" required>
+
+            <label for="file">Upload your resume (PDF or DOCX)</label>
+            <input id="file" type="file" name="file" accept=".pdf,.docx">
+
+            <label for="resume">Or paste your resume text</label>
+            <textarea id="resume" name="resume" rows="8"
+                      placeholder="Paste your resume here (optional if you uploaded a file)"></textarea>
+
+            <button type="submit" id="submit-btn">Analyze resume</button>
+        </form>
+    </section>
+
+    <section class="report" aria-live="polite">
+        {% if result %}
+            {{ report(result) }}
+        {% else %}
+            <p class="empty">Your results will appear here: matching skills, gaps, a roadmap and interview questions for your target role.</p>
+        {% endif %}
+    </section>
+</div>
+
+<script>
+    // The AI call can take a few seconds: show progress and stop double submits.
+    document.getElementById("analyze-form").addEventListener("submit", function () {
+        var btn = document.getElementById("submit-btn");
+        btn.disabled = true;
+        btn.textContent = "Analyzing…";
+    });
+</script>
+
+{% endblock %}

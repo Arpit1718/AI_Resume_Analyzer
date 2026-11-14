@@ -1,0 +1,33 @@
+{% macro report(result) %}
+    {% if result.error %}
+        <p class="form-error" role="alert">{{ result.error }}</p>
+    {% else %}
+        <div class="finding have">
+            <h2>Skills that fit this role</h2>
+            <ul class="chips">
+                {% for s in result.get("skills", []) %}<li>{{ s }}</li>{% else %}<li>None found</li>{% endfor %}
+            </ul>
+        </div>
+
+        <div class="finding gap">
+            <h2>Missing skills</h2>
+            <ul class="chips">
+                {% for s in result.get("missing_skills", []) %}<li>{{ s }}</li>{% else %}<li>No major gaps</li>{% endfor %}
+            </ul>
+        </div>
+
+        <div class="finding next">
+            <h2>Roadmap to close the gaps</h2>
+            <ol>
+                {% for step in result.get("roadmap", []) %}<li>{{ step }}</li>{% endfor %}
+            </ol>
+        </div>
+
+        <div class="finding next">
+            <h2>Interview questions to practice</h2>
+            <ul>
+                {% for q in result.get("interview_questions", []) %}<li>{{ q }}</li>{% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endmacro %}

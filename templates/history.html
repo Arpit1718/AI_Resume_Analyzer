@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_report.html" import report %}
+{% block title %}History · AI Resume Analyzer{% endblock %}
+{% block content %}
+
+<h1>Your history</h1>
+<p class="sub-text">Your past analyses, newest first.</p>
+
+{% if reports %}
+    <div class="history-list">
+        {% for r in reports %}
+            <details class="entry">
+                <summary>
+                    Analysis {{ loop.revindex }}
+                    <span class="when">{{ r.resume[:100] }}{% if r.resume|length > 100 %}…{% endif %}</span>
+                </summary>
+
+                {{ report(r.result) }}
+            </details>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="empty">
+        No analyses yet. <a href="{{ url_for('dashboard') }}">Analyze your first resume</a>.
+    </p>
+{% endif %}
+
+{% endblock %}
